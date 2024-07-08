@@ -1,0 +1,7 @@
+tasks:
+  - name: Update the apache config file
+    ansible.builtin.template:
+      src: ./httpd.conf
+      dest: /etc/httpd.conf
+    notify:
+    - Restart apache
