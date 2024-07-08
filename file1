@@ -1,0 +1,6 @@
+Vault password:
+
+localhost | SUCCESS => {
+    "changed": false,
+    "db_password": "12345678"
+}
