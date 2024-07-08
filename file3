@@ -1,0 +1,5 @@
+tasks:
+- name: Hide sensitive value example
+  debug:
+    msg: "This is sensitive information"
+  no_log: true
