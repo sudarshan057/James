@@ -22,6 +22,26 @@
     ansible.builtin.yum:
       name: postgresql
       state: latest
+
+#feature202 changes done by james in july 2024
+Playbook syntax
+
+Playbook execution
+
+Task execution
+
+Desired state and ‘idempotency’
+
+Running playbooks
+
+Running playbooks in check mode
+
+Ansible-Pull
+
+Verifying playbooks
+
+ansible-lint
+=======
 #feature201 changed by james in july 2024
 ansible-lint
 Learn how to test Ansible Playbooks syntax
@@ -47,6 +67,7 @@ Complete end-to-end playbook examples
 Mailing List
 Questions? Help? Ideas? Stop by the list on Google Groups.
 #End of feature201 code.
+
 
   - name: Ensure that postgresql is started
     ansible.builtin.service:
