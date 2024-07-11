@@ -22,6 +22,24 @@
     ansible.builtin.yum:
       name: postgresql
       state: latest
+#feature202 changes done by james in july 2024
+Playbook syntax
+
+Playbook execution
+
+Task execution
+
+Desired state and ‘idempotency’
+
+Running playbooks
+
+Running playbooks in check mode
+
+Ansible-Pull
+
+Verifying playbooks
+
+ansible-lint
 
   - name: Ensure that postgresql is started
     ansible.builtin.service:
