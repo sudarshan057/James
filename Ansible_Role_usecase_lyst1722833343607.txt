@@ -1,0 +1,198 @@
+LAMP (Linux, Apache, MySQL, PHP/Perl/Python)is a software development framework 
+that is open source using the operating system Linux, the Software-Server Apache, 
+the partnership database management system MySQL, and the object-oriented scripting language Perl / PHP /Python.
+
+
+1. To setup the lamp server LAMP(Linux,Apache,MySQL and PHP)
+
+[root@ansibleserver ~]# ansible-galaxy init lamp
+
+2.
+[root@ansibleserver ~]# tree
+.
+├── anaconda-ks.cfg
+└── lamp
+    ├── defaults
+    │   └── main.yml
+    ├── files
+    ├── handlers
+    │   └── main.yml
+    ├── meta
+    │   └── main.yml
+    ├── README.md
+    ├── tasks
+    │   └── main.yml
+    ├── templates
+    ├── tests
+    │   ├── inventory
+    │   └── test.yml
+    └── vars
+        └── main.yml
+
+9 directories, 9 files
+
+3. create a httpd.yml file  under tasks folder
+[root@ansibleserver ~]# cd lamp
+[root@ansibleserver lamp]# cd tasks
+[root@ansibleserver tasks]# pwd
+/root/lamp/tasks
+(Note: we are not specify any hosts here, we mention only the tasks)
+
+[root@ansibleserver tasks]# vi httpd.yml
+---
+- name: install apache(httpd)
+
+  yum:
+    name: httpd
+    state: latest
+
+-   name: start apache
+    service:
+      name: httpd
+      state: started
+-   name: copy index.html file
+    copy:
+      src: index.html
+      dest: /var/www/html/
+
+
+4. [root@ansibleserver tasks]# vi php.yml
+
+---
+- name: installation of php
+  yum:
+    name: php
+    state: latest
+- name: copy phpinfo file
+  copy:
+    src: phpinfo.php
+    dest: /var/www/html
+  notify: restart apache server
+
+5. [root@ansibleserver tasks]# vi mysql.yml
+---
+- name: install mariadb
+  yum:
+    name: mariadb
+    state: latest
+- name: install mariadb server
+  yum:
+    name: mariadb-server
+    state: latest
+
+- name: installation of php
+  yum:
+     name: php
+     state: latest
+
+- name: install php_mysql
+  yum:
+    name: phpmysql
+    state: latest
+
+-  name: start mariadb
+   service:
+     name: mariadb
+     state: started
+
+
+5.1 include the tasks in main.yml (tasks folder)
+---
+# tasks file for lamp
+- include_tasks: httpd.yml
+- include_tasks: php.yml
+- include_tasks: mysql.yml
+
+6.[root@ansibleserver tasks]# cd ..
+[root@ansibleserver lamp]# ls
+defaults  files  handlers  meta  README.md  tasks  templates  tests  vars
+[root@ansibleserver lamp]# cd files
+[root@ansibleserver files]# vi index.html
+<html>
+<body><b>apache server installed </b>
+</body>
+</html>
+
+
+[root@ansibleserver files]# vi phpinfo.php
+<?php
+phpinfo();
+?>
+
+7. go to handlers section
+	[root@ansibleserver lamp]# cd handlers
+[root@ansibleserver handlers]# vi main.yml
+---
+# handlers file for lamp
+- name: restart apache server
+  service:
+    name: httpd
+    state: restarted
+
+	
+[root@ansibleserver handlers]# cd ..
+[root@ansibleserver lamp]# tree
+
+8. To check from ansible server that,  hosts machines were ping or not
+
+	[ansible@ansibleserver lamp]$ ansible -m ping appservers
+
+9. to call the role
+
+[ansible@ansibleserver lamp]$ cd ..
+ansible@ansibleserver ~]$
+
+10. create a new playbook and call this role into it.
+
+[ansible@ansibleserver ~]$ vi mylamp.yml
+
+---
+- hosts: appservers
+  become: true
+  roles:
+  - lamp
+
+11. test the playbook
+	ansible-playbook mylamp.yml --syntax-check
+	ansible-playbook mylamp.yml
+
+
+
+
+
+
+
+After executing the role successfully , check the packages have installed in your node machines of the following
+
+[ansibleadm@ip-10-7-2-11 ~]$ httpd -version
+
+
+[ansibleadm@ip-10-7-2-11 ~]$ php --version
+PHP 5.4.16 (cli) (built: Oct 31 2019 18:34:05)
+Copyright (c) 1997-2013 The PHP Group
+Zend Engine v2.4.0, Copyright (c) 1998-2013 Zend Technologies
+
+[ansibleadm@ip-10-7-2-11 ~]$ mysql --version
+mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
+
+
+[ansibleadm@ip-10-7-2-11 ~]$ sudo systemctl start mariadb
+[ansibleadm@ip-10-7-2-11 ~]$ sudo systemctl status mariadb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
