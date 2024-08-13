@@ -1,0 +1,18 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+   - name: Install Packages
+     yum: name={{ item }} update_cache=yes state=latest
+     with_items:
+       - vim
+       - lsof
+       - nano
+       
+   
+#After successfully executed the playbook in host machine, 
+#check the version in host machines
+#vim -version
+#lsof -version
+#nano --version   
