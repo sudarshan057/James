@@ -178,6 +178,7 @@ mysql  Ver 15.1 Distrib 5.5.68-MariaDB, for Linux (x86_64) using readline 5.1
 
 [ansibleadm@ip-10-7-2-11 ~]$ sudo systemctl start mariadb
 [ansibleadm@ip-10-7-2-11 ~]$ sudo systemctl status mariadb
+sudarshan and Jyothi
 
 
 
